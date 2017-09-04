@@ -128,7 +128,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>1.3.0.RELEASE</version>
                 <configuration><!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>iflyer.IflyerApplication</mainClass>
+                    <mainClass>boluome.IflyerApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
@@ -264,3 +264,13 @@ INFO] Building jar: /Users/liuxin/git/模仿项目/multi-boluome/web/target/blm-
 
 ==提醒：所有模块里面的父节点都是一样的哦，不然会报错 unknow.version==
 >WARNING] 'parent.relativePath' of POM blm.server:domain:[unknown-version] 类似
+
+> 2017-08-30 爬坑指南
+
+springboot 内置了MongoDB驱动，默认配置localhost：27017，若本机没有配置mongodb，则会连接失败。(http://blog.csdn.net/jxq0816/article/details/77504226?locationNum=8&fps=1)
+
+1. 添加注解：@SpringBootApplication(exclude = {MongoAutoConfiguration.class,MongoDataAutoConfiguration.class})
+
+2. 走过的弯路：这样配置，使用Spring Boot 内置的tomcat没有任何问题，但是一旦将war包部署至服务器，spring boot还是会去实例化一个默认的mongoDB 
+@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@EnableConfigurationProperties
